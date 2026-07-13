@@ -35,12 +35,9 @@
 							<i class="fa fa-bars"></i> All category
 						</button>
 						<div class="dropdown-menu">
-							<a class="dropdown-item" href="#">Machinery / Mechanical Parts / Tools </a>
-							<a class="dropdown-item" href="#">Consumer Electronics / Home Appliances </a>
-							<a class="dropdown-item" href="#">Auto / Transportation</a>
-							<a class="dropdown-item" href="#">Apparel / Textiles / Timepieces </a>
-							<a class="dropdown-item" href="#">Home & Garden / Construction / Lights </a>
-							<a class="dropdown-item" href="#">Beauty & Personal Care / Health </a>
+							{% for category in categories %}
+							<a class="dropdown-item" href="{% url 'products_by_category' category.slug %}">{{ category.category_name }}</a>
+							{% endfor %}
 						</div>
 					</div> <!-- category-wrap.// -->
 				</div> <!-- col.// -->
@@ -105,15 +102,14 @@
 			{% for product in products %}
 			<div class="col-md-3">
 				<div class="card card-product-grid">
-					<a href="{% url 'product_detail' %}" class="img-wrap"> <img src="{{ product.images.url }}"> </a>
+					<a href="{% url 'product_detail' product.slug %}" class="img-wrap"> <img src="{{ product.images.url }}"> </a>
 					<figcaption class="info-wrap">
-						<a href="{% url 'product_detail' %}" class="title">{{ product.product_name}}</a>
-						<div class="price mt-1"> {{ product.price }} </div> <!-- price-wrap.// -->
+						<a href="{% url 'product_detail' product.slug %}" class="title">{{ product.product_name}}</a>
+						<div class="price mt-1">$ {{ product.price }} </div>
 					</figcaption>
 				</div>
-				</div>
+			</div>
 			{% endfor %}
-			</div> <!-- col.// -->
 		</div> <!-- row.// -->
 
 	</div><!-- container // -->
