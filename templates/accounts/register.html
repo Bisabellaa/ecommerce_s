@@ -6,16 +6,16 @@
 <div class="container">
 	<div class="card mx-auto" style="max-width: 500px; margin-top:40px;">
 		<div class="card-body">
-			<h4 class="card-title mb-4">Create Account</h4>
+			<h4 class="card-title mb-4">Crear cuenta</h4>
 			<form method="post" action="{% url 'register' %}">
 				{% csrf_token %}
 				<div class="form-row">
 					<div class="form-group col-md-6">
-						<label>First name</label>
+						<label>Nombre</label>
 						<input type="text" name="first_name" class="form-control">
 					</div>
 					<div class="form-group col-md-6">
-						<label>Last name</label>
+						<label>Apellido</label>
 						<input type="text" name="last_name" class="form-control">
 					</div>
 				</div>
@@ -24,18 +24,18 @@
 					<input type="email" name="email" class="form-control">
 				</div>
 				<div class="form-group">
-					<label>Username</label>
+					<label>Usuario</label>
 					<input type="text" name="username" class="form-control">
 				</div>
 				<div class="form-group">
-					<label>Password</label>
+					<label>Clave</label>
 					<input type="password" name="password" class="form-control">
 				</div>
-				<button type="submit" class="btn btn-primary btn-block">Register</button>
+				<button type="submit" class="btn btn-primary btn-block">Registrar</button>
 			</form>
 		</div>
 	</div>
-	<p class="text-center mt-4">Already have an account? <a href="{% url 'signin' %}">Sign in</a></p>
+	<p class="text-center mt-4"> Ya tienes una cuenta? <a href="{% url 'signin' %}">Iniciar</a></p>
 </div>
 </section>
 {% endblock %}
