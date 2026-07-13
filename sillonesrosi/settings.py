@@ -37,6 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'category',
+    'accounts',
+    'store',
 ]
 
 MIDDLEWARE = [
@@ -67,6 +70,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'sillonesrosi.wsgi.application'
+# Le especifico el modelo de usuario que vamos a usar, accounts el nombre de la aplicacion y Account del modelo.
+AUTH_USER_MODEL = 'accounts.Account'
 
 
 # Database
@@ -120,6 +125,11 @@ STATICFILES_DIRS = [
     'sillonesrosi/static',
 
 ]
+
+# Configuracion de los archivos multimedia
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR /'medias'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
