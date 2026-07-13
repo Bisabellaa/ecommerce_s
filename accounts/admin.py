@@ -9,9 +9,14 @@ class AccountAdmin(UserAdmin):
     readonly_fields = ('last_login','date_joined')
     ordering = ('-date_joined',)
 
-    filter_horizontal = ()
-    list_filter = ()
-    fieldsets = ()
+    filter_horizontal = ('groups', 'user_permissions')
+    list_filter = ('is_active', 'is_staff', 'is_admin')
+    fieldsets = (
+        (None, {'fields': ('email', 'password')}),
+        ('Personal info', {'fields': ('first_name', 'last_name', 'username', 'phone_number')}),
+        ('Permissions', {'fields': ('is_admin', 'is_staff', 'is_active', 'is_superadmin', 'is_superuser', 'groups', 'user_permissions')}),
+        ('Important dates', {'fields': ('last_login', 'date_joined')}),
+    )
 
 
 admin.site.register(Account, AccountAdmin)

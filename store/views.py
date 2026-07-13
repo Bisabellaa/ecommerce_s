@@ -4,7 +4,6 @@ from category.models import Category
 
 
 def store(request, category_slug=None):
-    categories = None
     products = None
 
     if category_slug is not None:
