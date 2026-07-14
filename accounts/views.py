@@ -33,9 +33,8 @@ def register(request):
             username=username,
             password=password
         )
-        auth.login(request, user)
-        messages.success(request, 'Registro exitoso.')
-        return redirect('home')
+        messages.success(request, 'Registro exitoso. Ahora podés iniciar sesión.')
+        return redirect('signin')
     return render(request, 'accounts/register.html')
 
 

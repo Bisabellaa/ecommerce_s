@@ -28,35 +28,6 @@
 
 				<p>{{ product.description }}</p>
 
-				<hr>
-				{% if colors %}
-				<div class="row">
-					<div class="item-option-select">
-						<h6>Elegir color</h6>
-						<select name="color" class="form-control">
-							<option value="">Seleccionar...</option>
-						  {% for color in colors %}
-						  <option value="{{ color.id }}">{{ color.variation_value }}</option>
-						  {% endfor %}
-						</select>
-					</div>
-				</div> <!-- row.// -->
-				{% endif %}
-
-				{% if sizes %}
-				<div class="row">
-					<div class="item-option-select">
-						<h6>Seleccionar talle</h6>
-						<select name="size" class="form-control">
-							<option value="">Seleccionar...</option>
-						  {% for size in sizes %}
-						  <option value="{{ size.id }}">{{ size.variation_value }}</option>
-						  {% endfor %}
-						</select>
-					</div>
-				</div> <!-- row.// -->
-				{% endif %}
-				<hr>
 				 <!-- concicion para saber si hay stock// -->
 				{% if product.stock > 0 %}
 					{% if in_cart %}
@@ -71,6 +42,34 @@
 					{% else %}
 					<form action="{% url 'add_cart' product.id %}" method="POST" id="add-cart-form">
 						{% csrf_token %}
+						{% if colors %}
+						<div class="row">
+							<div class="item-option-select">
+								<h6>Elegir color</h6>
+								<select name="color" class="form-control" required>
+									<option value="">Seleccionar...</option>
+								  {% for color in colors %}
+								  <option value="{{ color.id }}">{{ color.variation_value }}</option>
+								  {% endfor %}
+								</select>
+							</div>
+						</div> <!-- row.// -->
+						{% endif %}
+
+						{% if sizes %}
+						<div class="row">
+							<div class="item-option-select">
+								<h6>Seleccionar talle</h6>
+								<select name="size" class="form-control" required>
+									<option value="">Seleccionar...</option>
+								  {% for size in sizes %}
+								  <option value="{{ size.id }}">{{ size.variation_value }}</option>
+								  {% endfor %}
+								</select>
+							</div>
+						</div> <!-- row.// -->
+						{% endif %}
+						<hr>
 						<div id="variation-warning" class="alert alert-warning d-none mt-2" role="alert">
 							<i class="fas fa-exclamation-triangle"></i> Seleccioná todas las opciones antes de añadir al carro.
 						</div>

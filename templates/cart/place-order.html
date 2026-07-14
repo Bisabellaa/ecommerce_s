@@ -22,6 +22,9 @@
 				</div>
 				<figcaption class="info">
 					<p>{{ item.product.product_name }}</p>
+					{% for v in item.variations.all %}
+					<p class="text-muted small mb-0">{{ v.variation_category|title }}: {{ v.variation_value }}</p>
+					{% endfor %}
 					<span class="text-muted">{{ item.quantity }}x = ${{ item.sub_total|floatformat:2 }}</span>
 				</figcaption>
 			</figure>
