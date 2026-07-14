@@ -23,52 +23,66 @@
 				<h2 class="title">{{ product.product_name }}</h2>
 
 				<div class="mb-3"> 
-					<var class="price h4">${{ product.price }}</var> 
+					<var class="price h4">${{ product.price }} ARS</var> 
 				</div> 
 
 				<p>{{ product.description }}</p>
 
 				<hr>
+				{% if colors %}
 				<div class="row">
 					<div class="item-option-select">
-						<h6>Choose Color</h6>
-						<div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
-						  <label class="btn btn-light">
-						    <input type="radio" name="radio_color"> Silver
-						  </label>
-						  <label class="btn btn-light">
-						    <input type="radio" name="radio_color"> Gray
-						  </label>
-						  <label class="btn btn-light active">
-						    <input type="radio" name="radio_color" checked> Gold
-						  </label>
-						  <label class="btn btn-light">
-						    <input type="radio" name="radio_color"> Black
-						  </label>
-						</div> 
+						<h6>Elegir color</h6>
+						<select name="color" class="form-control">
+							<option value="">Seleccionar...</option>
+						  {% for color in colors %}
+						  <option value="{{ color.id }}">{{ color.variation_value }}</option>
+						  {% endfor %}
+						</select>
 					</div>
 				</div> <!-- row.// -->
+				{% endif %}
+
+				{% if sizes %}
 				<div class="row">
 					<div class="item-option-select">
-						<h6>Select Size</h6>
-						<div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
-						  <label class="btn btn-light">
-						    <input type="radio" name="radio_size"> S
-						  </label>
-						  <label class="btn btn-light active">
-						    <input type="radio" name="radio_size" checked> M
-						  </label>
-						  <label class="btn btn-light">
-						    <input type="radio" name="radio_size"> L
-						  </label>
-						  <label class="btn btn-light">
-						    <input type="radio" name="radio_size"> XL
-						  </label>
-						</div> 
+						<h6>Seleccionar talle</h6>
+						<select name="size" class="form-control">
+							<option value="">Seleccionar...</option>
+						  {% for size in sizes %}
+						  <option value="{{ size.id }}">{{ size.variation_value }}</option>
+						  {% endfor %}
+						</select>
 					</div>
 				</div> <!-- row.// -->
+				{% endif %}
 				<hr>
-				<a href="#" class="btn btn-primary"> <span class="text">Añadir al carro</span> <i class="fas fa-shopping-cart"></i> </a>
+				 <!-- concicion para saber si hay stock// -->
+				{% if product.stock > 0 %}
+					{% if in_cart %}
+					<div class="mb-3">
+						<p class="text-success font-weight-bold">
+							<i class="fas fa-check"></i> Agregado al carro
+						</p>
+						<a href="{% url 'cart' %}" class="btn btn-info">
+							<i class="fas fa-eye"></i> Ver carrito
+						</a>
+					</div>
+					{% else %}
+					<form action="{% url 'add_cart' product.id %}" method="POST" id="add-cart-form">
+						{% csrf_token %}
+						<div id="variation-warning" class="alert alert-warning d-none mt-2" role="alert">
+							<i class="fas fa-exclamation-triangle"></i> Seleccioná todas las opciones antes de añadir al carro.
+						</div>
+						<button type="submit" class="btn btn-primary">
+							<span class="text">Añadir al carro</span>
+							<i class="fas fa-shopping-cart"></i>
+						</button>
+					</form>
+					{% endif %}
+				{% else %}
+				<p class="text-danger font-weight-bold">No hay stock</p>
+				{% endif %}
 			</article> <!-- product-info-aside .// -->
 		</main> <!-- col.// -->
 	</div> <!-- row.// -->
@@ -76,4 +90,29 @@
 
 </div>
 </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+	$('#add-cart-form').on('submit', function(e) {
+		var warning = $('#variation-warning');
+		var missing = [];
+
+		if ($('select[name="color"]').length && !$('select[name="color"]').val()) {
+			missing.push('color');
+		}
+		if ($('select[name="size"]').length && !$('select[name="size"]').val()) {
+			missing.push('talle');
+		}
+
+		if (missing.length) {
+			e.preventDefault();
+			warning.removeClass('d-none');
+		} else {
+			warning.addClass('d-none');
+		}
+	});
+});
+</script>
 {% endblock %}

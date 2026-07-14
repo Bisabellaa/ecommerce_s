@@ -4,9 +4,121 @@
 {% block content %}
 <section class="section-content padding-y bg" style="min-height:80vh">
 <div class="container">
-	<h3 class="mb-4">Shopping Cart</h3>
-	<p>Your cart is empty.</p>
-	<a href="{% url 'store' %}" class="btn btn-primary">Continue Shopping</a>
+
+{% if cart_items %}
+<div class="row">
+	<aside class="col-lg-9">
+<div class="card">
+<table class="table table-borderless table-shopping-cart">
+<thead class="text-muted">
+<tr class="small text-uppercase">
+  <th scope="col">Producto</th>
+  <th scope="col" width="120">Cantidad</th>
+  <th scope="col" width="120">Precio</th>
+  <th scope="col" class="text-right" width="200"> </th>
+</tr>
+</thead>
+<tbody>
+{% for item in cart_items %}
+<tr>
+	<td>
+		<figure class="itemside align-items-center">
+			<div class="aside">
+				{% if item.product.images %}
+				<img src="{{ item.product.images.url }}" class="img-sm">
+				{% endif %}
+			</div>
+			<figcaption class="info">
+				<a href="{% url 'product_detail' item.product.slug %}" class="title text-dark">{{ item.product.product_name }}</a>
+				{% for v in item.variations.all %}
+				<p class="text-muted small mb-0">{{ v.variation_category|title }}: {{ v.variation_value }}</p>
+				{% endfor %}
+			</figcaption>
+		</figure>
+	</td>
+	<td>
+		<div class="col">
+			<form action="{% url 'update_cart' item.id %}" method="POST" class="update-cart-form">
+				{% csrf_token %}
+				<div class="input-group input-spinner">
+					<div class="input-group-prepend">
+						<button class="btn btn-light btn-minus" type="submit" name="action" value="minus"> <i class="fa fa-minus"></i> </button>
+					</div>
+					<input type="text" name="quantity" class="form-control quantity-input" value="{{ item.quantity }}">
+					<div class="input-group-append">
+						<button class="btn btn-light btn-plus" type="submit" name="action" value="plus"> <i class="fa fa-plus"></i> </button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</td>
+	<td>
+		<div class="price-wrap">
+			<var class="price">${{ item.sub_total|floatformat:2 }} ARS</var>
+			<small class="text-muted"> ${{ item.product.price|floatformat:2 }} ARS c/u </small>
+		</div>
+	</td>
+	<td class="text-right">
+		<form action="{% url 'remove_cart_item' item.id %}" method="POST">
+			{% csrf_token %}
+			<button type="submit" class="btn btn-danger">Eliminar</button>
+		</form>
+	</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+
+	</aside>
+	<aside class="col-lg-3">
+
+		<div class="card">
+		<div class="card-body">
+			<dl class="dlist-align">
+			  <dt>Subtotal:</dt>
+			  <dd class="text-right">${{ total|floatformat:2 }}</dd>
+			</dl>
+			<dl class="dlist-align">
+			  <dt>IVA (10%):</dt>
+			  <dd class="text-right"> ${{ iva|floatformat:2 }}</dd>
+			</dl>
+			<dl class="dlist-align">
+			  <dt>Total:</dt>
+			  <dd class="text-right text-dark b"><strong>${{ grand_total|floatformat:2 }}</strong></dd>
+			</dl>
+			<hr>
+			<p class="text-center mb-3">
+				<img src="{% static 'images/misc/payments.png' %}" height="26">
+			</p>
+			<a href="{% url 'place_order' %}" class="btn btn-primary btn-block">Finalizar compra</a>
+			<a href="{% url 'store' %}" class="btn btn-light btn-block">Seguir comprando</a>
+		</div>
+		</div>
+
+</aside>
+
+</div>
+{% else %}
+	<div class="text-center">
+		<h3 class="mb-4">Carrito de compras</h3>
+		<p>Tu carrito está vacío.</p>
+		<a href="{% url 'store' %}" class="btn btn-primary">Seguir comprando</a>
+	</div>
+{% endif %}
+
 </div>
 </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+	$('.quantity-input').on('keypress', function(e) {
+		if (e.which === 13) {
+			$(this).closest('form').submit();
+		}
+	});
+});
+</script>
 {% endblock %}

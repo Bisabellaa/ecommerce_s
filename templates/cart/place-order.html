@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="section-content padding-y bg" style="min-height:80vh">
+<div class="container">
+
+<div class="row">
+	<main class="col-md-8">
+
+<article class="card mb-4">
+<div class="card-body">
+	<h4 class="card-title mb-4">Revisar carrito</h4>
+	<div class="row">
+		{% for item in cart_items %}
+		<div class="col-md-6">
+			<figure class="itemside mb-4">
+				<div class="aside">
+					{% if item.product.images %}
+					<img src="{{ item.product.images.url }}" class="border img-sm">
+					{% endif %}
+				</div>
+				<figcaption class="info">
+					<p>{{ item.product.product_name }}</p>
+					<span class="text-muted">{{ item.quantity }}x = ${{ item.sub_total|floatformat:2 }}</span>
+				</figcaption>
+			</figure>
+		</div>
+		{% endfor %}
+	</div>
+</div>
+</article>
+
+<article class="card mb-4">
+<div class="card-body">
+	<h4 class="card-title mb-4">Información de contacto</h4>
+	<form action="">
+		<div class="row">
+			<div class="form-group col-sm-6">
+				<label>Nombre</label>
+				<input type="text" placeholder="Ingresá tu nombre" class="form-control">
+			</div>
+			<div class="form-group col-sm-6">
+				<label>Apellido</label>
+				<input type="text" placeholder="Ingresá tu apellido" class="form-control">
+			</div>
+			<div class="form-group col-sm-6">
+				<label>Teléfono</label>
+				<input type="text" placeholder="+54 11" class="form-control">
+			</div>
+			<div class="form-group col-sm-6">
+				<label>Correo electrónico</label>
+				<input type="email" placeholder="ejemplo@gmail.com" class="form-control">
+			</div>
+		</div>
+	</form>
+</div>
+</article>
+
+<article class="card mb-4">
+<div class="card-body">
+	<h4 class="card-title mb-4">Dirección de envío</h4>
+	<form action="">
+		<div class="row">
+			<div class="form-group col-sm-6">
+				<label>País*</label>
+				<select name="" class="form-control">
+					<option value="">Argentina</option>
+					<option value="">Chile</option>
+					<option value="">Uruguay</option>
+					<option value="">Brasil</option>
+				</select>
+			</div>
+			<div class="form-group col-sm-6">
+				<label>Provincia*</label>
+				<input type="text" placeholder="Ingresá tu provincia" class="form-control">
+			</div>
+			<div class="form-group col-sm-8">
+				<label>Calle*</label>
+				<input type="text" placeholder="Ingresá tu calle" class="form-control">
+			</div>
+			<div class="form-group col-sm-4">
+				<label>Altura</label>
+				<input type="text" placeholder="" class="form-control">
+			</div>
+			<div class="form-group col-sm-4">
+				<label>Piso / Depto</label>
+				<input type="text" placeholder="" class="form-control">
+			</div>
+			<div class="form-group col-sm-4">
+				<label>Localidad</label>
+				<input type="text" placeholder="" class="form-control">
+			</div>
+			<div class="form-group col-sm-4">
+				<label>Código postal</label>
+				<input type="text" placeholder="" class="form-control">
+			</div>
+		</div>
+	</form>
+</div>
+</article>
+
+<article class="accordion" id="accordion_pay">
+	<div class="card">
+		<header class="card-header">
+			<img src="{% static 'images/misc/payment-paypal.png' %}" class="float-right" height="24">
+			<label class="form-check collapsed" data-toggle="collapse" data-target="#pay_paynet">
+				<input class="form-check-input" name="payment-option" checked type="radio" value="option2">
+				<h6 class="form-check-label">
+					Paypal
+				</h6>
+			</label>
+		</header>
+		<div id="pay_paynet" class="collapse show" data-parent="#accordion_pay">
+		<div class="card-body">
+			<p class="text-center text-muted">Conectá tu cuenta de PayPal para pagar. Serás redirigido a PayPal para ingresar tu información de facturación.</p>
+			<p class="text-center">
+				<a href="#"><img src="{% static 'images/misc/btn-paypal.png' %}" height="32"></a>
+				<br><br>
+			</p>
+		</div>
+		</div>
+	</div>
+	<div class="card">
+	<header class="card-header">
+		<img src="{% static 'images/misc/payment-card.png' %}" class="float-right" height="24">
+		<label class="form-check" data-toggle="collapse" data-target="#pay_payme">
+			<input class="form-check-input" name="payment-option" type="radio" value="option2">
+			<h6 class="form-check-label"> Tarjeta de crédito </h6>
+		</label>
+	</header>
+	<div id="pay_payme" class="collapse" data-parent="#accordion_pay">
+		<div class="card-body">
+			<p class="alert alert-success">Alguna información o instrucción</p>
+			<form class="form-inline">
+				<input type="text" class="form-control mr-2" placeholder="xxxx-xxxx-xxxx-xxxx" name="">
+				<input type="text" class="form-control mr-2" style="width: 100px" placeholder="dd/yy" name="">
+				<input type="number" maxlength="3" class="form-control mr-2" style="width: 100px" placeholder="cvc" name="">
+				<button class="btn btn btn-success">Pagar</button>
+			</form>
+		</div>
+	</div>
+	</div>
+</article>
+
+	</main>
+	<aside class="col-md-4">
+		<div class="card">
+		<div class="card-body">
+			<dl class="dlist-align">
+			  <dt>Subtotal:</dt>
+			  <dd class="text-right">${{ total|floatformat:2 }}</dd>
+			</dl>
+			<dl class="dlist-align">
+			  <dt>IVA (10%):</dt>
+			  <dd class="text-right">${{ iva|floatformat:2 }}</dd>
+			</dl>
+			<dl class="dlist-align">
+			  <dt>Total:</dt>
+			  <dd class="text-right text-dark b"><strong>${{ grand_total|floatformat:2 }}</strong></dd>
+			</dl>
+			<hr>
+			<p class="text-center mb-3">
+				<img src="{% static 'images/misc/payments.png' %}" height="26">
+			</p>
+			<a href="#" class="btn btn-primary btn-block">Confirmar pedido</a>
+		</div>
+		</div>
+	</aside>
+</div>
+
+</div>
+</section>
+{% endblock %}

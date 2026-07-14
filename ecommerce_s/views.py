@@ -10,6 +10,3 @@ def home(request):
     return render(request, 'home.html', context)
 
 
-def cart(request):
-    return render(request, 'cart/cart.html')
-
